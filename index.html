@@ -28,16 +28,17 @@
       background:var(--paper);
       color:var(--ink);
       line-height:1.55;
+      padding-top:0; /* will be set dynamically to match nav height */
     }
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--max);margin:0 auto;padding:0 20px}
 
     .nav{
-      position:sticky;
-      top:0;
-      z-index:50;
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:60;
       backdrop-filter:saturate(1.2) blur(6px);
-      background:rgba(246,243,239,.82);
+      background:rgba(246,243,239,.92);
       border-bottom:1px solid var(--line);
     }
     .nav-inner{
@@ -1017,6 +1018,17 @@ Email: mguo77@u.nus.edu
         closeMobileMenu();
       }
     });
+  </script>
+
+  <script>
+    function updateBodyPaddingForNav(){
+      const nav = document.querySelector('.nav');
+      if(!nav) return;
+      const h = Math.ceil(nav.getBoundingClientRect().height);
+      document.body.style.paddingTop = h + 'px';
+    }
+    window.addEventListener('load', updateBodyPaddingForNav);
+    window.addEventListener('resize', updateBodyPaddingForNav);
   </script>
 </body>
 </html>
