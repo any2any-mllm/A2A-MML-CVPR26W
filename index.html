@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A2A-MML 2026</title>
+  <meta name="description" content="WORKSHOP ON ANY-TO-ANY MULTIMODAL LEARNING A2A-MML" />
+  <style>
+    :root{
+      --gunn-red:#9b0d13;
+      --gunn-red-dark:#6f0a0f;
+      --paper:#f6f3ef;
+      --ink:#0f0f12;
+      --muted:#5e5a55;
+      --line:#e9e4dc;
+      --card:#ffffff;
+      --radius:18px;
+      --shadow:0 10px 28px rgba(0,0,0,.10);
+      --shadow-soft:0 6px 18px rgba(0,0,0,.08);
+      --max:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Times New Roman", Times, serif;
+      background:var(--paper);
+      color:var(--ink);
+      line-height:1.55;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max);margin:0 auto;padding:0 20px}
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:saturate(1.2) blur(6px);
+      background:rgba(246,243,239,.82);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:700;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .logo{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      object-fit:cover;
+      display:block;
+      box-shadow:0 2px 10px rgba(0,0,0,.12);
+    }
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      font-weight:600;
+    }
+    .menu a{opacity:.86;text-underline-offset:6px;}
+    .menu a:hover{opacity:1;text-decoration:underline}
+
+    /* Nav submit button */
+    .menu .nav-submit{
+      opacity:1;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.10);
+      background:var(--gunn-red);
+      color:#fff;
+      font-weight:700;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      white-space:nowrap;
+    }
+    .menu .nav-submit:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 26px rgba(0,0,0,.16);
+      background:var(--gunn-red-dark);
+      text-decoration:none;
+    }
+
+    /* ===== Mobile 2-level menu ===== */
+    .nav-toggle{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.10);
+      background:rgba(255,255,255,.75);
+      box-shadow:0 6px 16px rgba(0,0,0,.10);
+      cursor:pointer;
+    }
+    .nav-toggle:active{ transform:translateY(1px); }
+    .nav-toggle .bars{
+      width:20px; height:14px; position:relative;
+    }
+    .nav-toggle .bars span{
+      position:absolute; left:0; right:0;
+      height:2px; border-radius:2px;
+      background:rgba(15,15,18,.9);
+    }
+    .nav-toggle .bars span:nth-child(1){ top:0; }
+    .nav-toggle .bars span:nth-child(2){ top:6px; }
+    .nav-toggle .bars span:nth-child(3){ top:12px; }
+
+    .mobile-menu{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:none;
+    }
+    .mobile-menu.open{ display:block; }
+    .mm-overlay{
+      position:absolute; inset:0;
+      background:rgba(0,0,0,.45);
+      backdrop-filter:blur(2px);
+    }
+    .mm-panel{
+      position:absolute; top:0; right:0; height:100%;
+      width:min(420px, 92vw);
+      background:rgba(246,243,239,.96);
+      border-left:1px solid var(--line);
+      box-shadow: -18px 0 40px rgba(0,0,0,.18);
+      padding:14px 16px 18px;
+      overflow:auto;
+      transform:translateX(8px);
+    }
+    .mm-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 2px 10px;
+      border-bottom:1px solid var(--line);
+    }
+    .mm-title{
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .mm-close{
+      width:44px; height:44px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.10);
+      background:rgba(255,255,255,.75);
+      cursor:pointer;
+      font-weight:800;
+      color:var(--muted);
+    }
+    .mm-close:hover{ background:#fff; }
+
+    .mm-actions{
+      padding:14px 0 10px;
+    }
+    .mm-submit{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,.10);
+      background:var(--gunn-red);
+      color:#fff;
+      font-weight:800;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      white-space:nowrap;
+    }
+    .mm-submit:hover{ background:var(--gunn-red-dark); }
+
+    .mm-groups{ padding:6px 0 6px; }
+    .mm-group{
+      background:rgba(255,255,255,.75);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow-soft);
+      margin:10px 0;
+      overflow:hidden;
+    }
+    .mm-group summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 14px;
+      font-weight:800;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .mm-group summary::-webkit-details-marker{ display:none; }
+    .mm-group summary .mm-caret{
+      width:34px; height:34px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.08);
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.8);
+      color:var(--gunn-red);
+      font-weight:900;
+      box-shadow:0 6px 14px rgba(0,0,0,.08);
+      flex:0 0 auto;
+      transition:transform .12s ease;
+    }
+    .mm-group[open] summary .mm-caret{ transform:rotate(90deg); }
+
+    .mm-links{
+      border-top:1px solid var(--line);
+      padding:10px 10px 12px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+    }
+    .mm-link{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.06);
+      background:rgba(255,255,255,.9);
+      font-weight:700;
+      opacity:.95;
+    }
+    .mm-link:hover{
+      opacity:1;
+      border-color:rgba(0,0,0,.10);
+      background:#fff;
+    }
+
+    @media (max-width: 860px){
+      .menu{ display:none; }
+      .nav-toggle{ display:inline-flex; }
+    }
+
+    .hero{
+      position:relative;
+      color:#fff;
+      min-height:72vh;
+      background:url("./background.png") center/cover no-repeat fixed;
+      display:flex;
+      align-items:center;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.45));
+    }
+    .hero .wrap{
+      position:relative;
+      z-index:1;
+      width:100%;
+      padding:72px 20px 80px;
+      text-align:center;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.28);
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+    .hero h1{
+      margin:16px 0 26px;
+      font-size:clamp(34px,6.4vw,64px);
+      line-height:1.04;
+      letter-spacing:.2px;
+      font-weight:700;
+    }
+
+    .cta{
+      display:flex;
+      justify-content:center;
+      margin-top:8px;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 22px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.22);
+      background:var(--gunn-red);
+      color:#fff;
+      font-weight:700;
+      box-shadow:0 12px 26px rgba(0,0,0,.18);
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      text-transform:capitalize;
+    }
+    .cta-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 18px 38px rgba(0,0,0,.22);
+      background:var(--gunn-red-dark);
+    }
+
+    main{padding-bottom:40px}
+    section{padding:52px 0}
+    .section-title{
+      margin:0 0 14px;
+      font-size:clamp(22px,3.2vw,34px);
+      color:var(--gunn-red);
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+
+    .box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .content h3{
+      margin:24px 0 12px;
+      font-size:20px;
+      font-weight:700;
+      color:var(--ink);
+      letter-spacing:.2px;
+    }
+    .content h3::before{
+      content:"";
+      display:block;
+      height:1px;
+      background:var(--line);
+      margin-bottom:14px;
+    }
+    .content p{margin:10px 0}
+
+    .bullets{margin:10px 0 10px 22px;padding:0;}
+    .bullets li{margin:6px 0}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:18px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:repeat(2,minmax(0,2fr))} }
+    /* 默认 4 列 */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:18px;
+    }
+    
+    /* 窄一点变 2 列 */
+    @media (max-width: 980px){
+      .grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+    
+    /* 手机端也保持 2 列，不要再变 1 列 */
+    @media (max-width: 520px){
+      .grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        gap:12px;
+      }
+    }
+
+    /* Organizers: show 5 columns on wide screens and reduce card/image size */
+    #organizersGrid{
+      grid-template-columns:repeat(5, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 1200px){
+      #organizersGrid{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 980px){
+      #organizersGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px){
+      #organizersGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* Slightly smaller cards for organizers */
+    #organizersGrid .card{ min-height:220px; }
+    #organizersGrid .card .img{ aspect-ratio:1/1; }
+
+    
+     /* Contributors: show 5 columns on wide screens and reduce card/image size */
+    #contributorsGrid{
+      grid-template-columns:repeat(5, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 1200px){
+      #contributorsGrid{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 980px){
+      #contributorsGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px){
+      #contributorsGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* Slightly smaller cards for contributors */
+    #contributorsGrid .card{ min-height:220px; }
+    #contributorsGrid .card .img{ aspect-ratio:1/1; }
+
+
+
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow-soft);
+      display:flex;
+      flex-direction:column;
+      min-height:320px;
+      cursor:pointer;
+      position:relative;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .card:hover{ transform:translateY(-2px); box-shadow:var(--shadow); }
+    .card .img{ aspect-ratio:4/5; background:#ddd; position:relative; overflow:hidden; }
+    .card .img img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .card .meta{ padding:12px 14px 14px; }
+    .card .name{ font-weight:700; font-size:18px; line-height:1.15; margin:0 0 6px; }
+    .card .affil{ margin:0; color:var(--muted); font-weight:400; font-size:14px; line-height:1.2; }
+    .card .chev{
+      position:absolute; top:10px; right:10px;
+      width:38px; height:38px; border-radius:999px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.08);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 6px 18px rgba(0,0,0,.10);
+    }
+    .card .chev span{ font-size:18px; font-weight:700; color:var(--gunn-red); transform:translateX(1px); }
+
+    .schedule{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:var(--card);
+      box-shadow:var(--shadow-soft);
+    }
+    .schedule th, .schedule td{
+      text-align:left; padding:12px 12px; border-bottom:1px solid var(--line); vertical-align:top; font-weight:400;
+    }
+    .schedule th{ background:rgba(155,13,19,.06); color:var(--ink); font-weight:400; }
+    .schedule tr:last-child td{border-bottom:none}
+    .schedule .section-row td{ background:rgba(0,0,0,.03); font-weight:400; }
+
+    .pill{ display:inline; padding:0; border:none; background:none; font-weight:400; }
+
+    /* ===== Important Dates cards (match screenshot style) ===== */
+    .dates-note{
+      margin:10px 0 18px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .dates-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:22px;
+      margin-top:10px;
+    }
+    @media (max-width: 980px){ .dates-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px){ .dates-grid{ grid-template-columns:1fr; } }
+
+    .date-card{
+      background:var(--card);
+      border:2px solid rgba(180, 200, 235, .55);
+      border-radius:22px;
+      padding:22px 24px;
+      box-shadow:0 10px 20px rgba(0,0,0,.10);
+      min-height:170px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:center;
+    }
+    .date-card .date{
+      margin:0 0 12px;
+      font-size:42px;
+      font-weight:700;
+      color:var(--ink); /* default: NOT red */
+      letter-spacing:.2px;
+    }
+    .date-card .date.is-deadline{
+      color:#ff0000; /* only deadline red */
+    }
+    .date-card .label{
+      margin:0;
+      font-size:22px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    /* Submit button inside content */
+    .submit-row{
+      display:flex;
+      justify-content:center;
+      margin-top:14px;
+    }
+    .submit-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.10);
+      background:var(--gunn-red);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      white-space:nowrap;
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .submit-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 14px 30px rgba(0,0,0,.16);
+      background:var(--gunn-red-dark);
+    }
+
+    .modal{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:22px; z-index:1000; background:rgba(0,0,0,.55);
+    }
+    .modal.open{display:flex}
+    .modal-panel{
+      width:min(980px, 100%); background:var(--card); border-radius:22px; border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 24px 60px rgba(0,0,0,.28); overflow:hidden;
+    }
+    .modal-head{
+      padding:18px 18px 10px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line);
+    }
+    .modal-title{ margin:0; font-weight:700; font-size:30px; color:var(--ink); letter-spacing:.2px; }
+    .modal-close{
+      width:44px; height:44px; border-radius:999px; border:1px solid var(--line); background:rgba(0,0,0,.02);
+      cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--muted);
+    }
+    .modal-close:hover{background:rgba(0,0,0,.05)}
+    .modal-body{ padding:18px; display:grid; grid-template-columns:280px 1fr; gap:18px; }
+    @media (max-width: 760px){ .modal-body{grid-template-columns:1fr} }
+    .modal-photo{ border-radius:18px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow-soft); background:#ddd; aspect-ratio:4/5; }
+    .modal-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .modal-text p{margin:10px 0}
+    .modal-sub{ margin:6px 0 0; color:var(--muted); font-weight:600; }
+
+    .modal-actions{ padding:0 18px 18px; display:flex; justify-content:flex-end; align-items:center; gap:12px; flex-wrap:wrap; }
+    .home-btn{
+      display:inline-flex; align-items:center; justify-content:center; padding:12px 16px; border-radius:14px;
+      border:1px solid rgba(0,0,0,.10); background:var(--gunn-red); color:#fff; font-weight:700; cursor:pointer;
+      box-shadow:0 10px 22px rgba(0,0,0,.12); white-space:nowrap;
+    }
+    .home-btn:hover{background:var(--gunn-red-dark)}
+
+    footer{
+      background:linear-gradient(135deg,var(--gunn-red),var(--gunn-red-dark));
+      color:#fff; margin-top:40px;
+    }
+    footer .container{
+      padding:26px 20px; display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; font-weight:700;
+    }
+    footer .muted{opacity:.92;font-weight:700}
+  </style>
+</head>
+
+<body>
+  <nav class="nav" aria-label="Primary">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">
+        <img class="logo" src="./logo.png" alt="A2A-MML logo" />
+        <span>A2A-MML · CVPR 2026</span>
+      </a>
+
+      <!-- Desktop menu -->
+      <div class="menu" aria-label="Desktop Menu">
+        <a class="nav-submit" href="https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/A2A-MML#tab-recent-activity" target="_blank" rel="noreferrer">Submit Paper</a>
+        <a href="#call-for-papers">Call for Papers</a>
+        <a href="#speakers">Speakers</a>
+        <a href="#schedule">Tentative Schedule</a>
+        <a href="#organizers">Organizers</a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button id="navToggle" class="nav-toggle" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+        <span class="bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile 2-level menu -->
+  <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <div class="mm-overlay" data-close="1"></div>
+    <div class="mm-panel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mm-head">
+        <div class="mm-title">Menu</div>
+        <button class="mm-close" type="button" aria-label="Close menu" data-close="1">✕</button>
+      </div>
+
+      <div class="mm-actions">
+        <a class="mm-submit" href="https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/A2A-MML#tab-recent-activity" target="_blank" rel="noreferrer">Submit Paper</a>
+      </div>
+
+      <div class="mm-groups">
+        <details class="mm-group" open>
+          <summary>
+            Workshop
+            <span class="mm-caret" aria-hidden="true">›</span>
+          </summary>
+          <div class="mm-links">
+            <a class="mm-link" href="#call-for-papers">Call for Papers</a>
+            <a class="mm-link" href="#schedule">Tentative Schedule</a>
+          </div>
+        </details>
+
+        <details class="mm-group">
+          <summary>
+            People
+            <span class="mm-caret" aria-hidden="true">›</span>
+          </summary>
+          <div class="mm-links">
+            <a class="mm-link" href="#speakers">Speakers</a>
+            <a class="mm-link" href="#organizers">Organizers</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <header id="top" class="hero">
+    <div class="container wrap">
+      <span class="badge">CVPR 2026 Workshop</span>
+      <h1>WORKSHOP ON ANY-TO-ANY MULTIMODAL LEARNING</h1>
+      <div class="cta">
+        <a class="cta-btn" href="#call-for-papers">Call for Papers</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section id="call-for-papers">
+      <div class="container">
+        <h2 class="section-title">Call for Papers</h2>
+
+        <h3>Important Dates</h3>
+        <p class="dates-note">Important Dates for Review Process. We will follow the suggested dates by CVPR26.</p>
+
+        <div class="dates-grid" aria-label="Important Dates">
+          <div class="date-card">
+            <p class="date is-deadline">Mar 01, 2026 AOE</p>
+            <p class="label">Workshop Paper Submission Deadline</p>
+          </div>
+
+          <div class="date-card">
+            <p class="date">Mar 19, 2026</p>
+            <p class="label">Workshop Paper Notification Date</p>
+          </div>
+
+          <div class="date-card">
+            <p class="date">Apr 10, 2026</p>
+            <p class="label">Program, Camera-ready, Videos Uploaded</p>
+          </div>
+        </div>
+
+        <h3>Paper Submission and Acceptance</h3>
+        <div class="box">
+          <p>We welcome technical, position, or perspective papers related to the topics outlined below. All submissions must be written in English, follow the official CVPR proceedings format, and adhere to the double-blind review policy.</p>
+
+          <div class="submit-row">
+            <a class="submit-btn" href="https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/A2A-MML#tab-recent-activity" target="_blank" rel="noreferrer">Submit Paper</a>
+          </div>
+
+          <ul class="bullets">
+            <li><strong>Tiny or Short Papers (2–4 pages)</strong> - We invite concise papers that present implementations and evaluations of unpublished but insightful ideas, moderate yet self-contained theoretical analyses, follow-up experiments, re-analyses of prior work, or new perspectives on existing research.</li>
+            <li><strong>Regular Papers (up to 8 pages, including figures and tables)</strong> - We encourage submissions introducing original methods, novel research visions, applications, or discussions of open challenges in multimodal learning.</li>
+          </ul>
+          <p>We accept both archival and non-archival paper submissions; authors should indicate the submission type during submission.</p>
+          </p>
+          <p>A Best Paper Award will be presented based on reviewer scores and the workshop committee’s evaluation.</p>
+          <p>All accepted papers will be presented as posters during the workshop, and some of them will be selected for short oral presentations. Poster sessions will be conducted onsite with dedicated time for interactive discussions. For remote attendees, we will offer a virtual poster gallery and live Q&amp;A channels to ensure inclusive engagement.</p>
+        </div>
+
+        <h3>Topics and Themes</h3>
+        <div class="box">
+          <p>We welcome all relevant submissions in the area of multimodal learning, with emphasis on any-to-any multimodal intelligence, such as:</p>
+          <ul class="bullets">
+            <li>Multimodal Representation Learning</li>
+            <li>Multimodal Transformation</li>
+            <li>Multimodal Synergistic Collaboration</li>
+            <li>Benchmarking and Evaluation for Any-to-Any Multimodal Learning</li>
+          </ul>
+
+          <p>Other topics include, but are not limited to:</p>
+          <ul class="bullets">
+            <li>Unified multimodal foundation and agentic models.</li>
+            <li>Representation learning for embodied and interactive systems.</li>
+            <li>Integration of underexplored modalities and cognitive perspectives on multimodal perception and reasoning.</li>
+          </ul>
+        </div>
+
+        <h3>About</h3>
+        <div class="box">
+          <p>The recent surge of multimodal large models has brought strong progress in connecting language, vision, audio, and beyond. Yet most existing systems remain constrained to fixed modality pairs, lacking flexibility to generalize or reason across arbitrary combinations. The Any-to-Any Multimodal Learning workshop aims to explore systems that can understand, align, transform, and generate across any set of modalities. We organize the discussion around three pillars: representation learning, transformation, and collaboration.</p>
+          <p>For the latest papers and datasets, please refer to <a href="https://github.com/any2any-mllm/awesome-any2any" target="_blank" ><b>Awesome-Any-to-Any-Generation</b></a>. This repository is regularly updated and provides valuable resources for your submission.</p>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="speakers">
+      <div class="container">
+        <h2 class="section-title">Speakers</h2>
+        <div style="height:16px"></div>
+        <div id="speakersGrid" class="grid" aria-label="Invited Speakers"></div>
+      </div>
+    </section>
+
+    <section id="schedule">
+      <div class="container">
+        <h2 class="section-title">Tentative Schedule</h2>
+        <div style="height:16px"></div>
+
+        <table class="schedule" aria-label="Workshop Schedule">
+          <thead>
+            <tr>
+              <th style="width:180px">Time</th>
+              <th>Schedule</th>
+              <th style="width:160px">Speaker</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="3">Morning Schedule</td></tr>
+            <tr><td>TBD</td><td>Introduction and opening remarks</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 1</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 2</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Oral Presentations</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Coffee Break</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 3</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 4</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Poster Session 1 (Interactive) + Virtual Gallery</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Lunch Break</td><td>-</td></tr>
+
+            <tr class="section-row"><td colspan="3">Afternoon Schedule</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 5</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 6</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Poster Session 2 (Interactive) + Virtual Gallery</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Coffee Break</td><td>-</td></tr>
+            <tr><td>TBD</td><td>Keynote Talk 7</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Panel Discussion</td><td>TBD</td></tr>
+            <tr><td>TBD</td><td>Closing Remarks + Best Paper Award</td><td>TBD</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="organizers">
+      <div class="container">
+        <h2 class="section-title">Organizers</h2>
+        <div style="height:12px"></div>
+        <div id="organizersGrid" class="grid" aria-label="Organizers"></div>
+      </div>
+    </section>
+
+    <section id="contribubotors">
+      <div class="container">
+        <h2 class="section-title">Contributors</h2>
+        <div style="height:12px"></div>
+        <div id="contributorsGrid" class="grid" aria-label="Contributors"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="muted">CVPR 2026 Workshop on Any-to-Any Multimodal Learning</div>
+      <div class="muted">A2A-MML</div>
+    </div>
+  </footer>
+
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Profile">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle" class="modal-title"></h3>
+          <div id="modalSub" class="modal-sub"></div>
+        </div>
+        <button id="modalClose" class="modal-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-photo"><img id="modalImg" alt="" /></div>
+        <div id="modalBio" class="modal-text"></div>
+      </div>
+      <div class="modal-actions">
+        <a id="modalHome" class="home-btn" href="#" target="_blank" rel="noreferrer"></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ORGANIZERS = [
+      { name:"Shengqiong Wu", affil:"University of Oxford", img:"./shengqiongwu.png", homepage:"https://sqwu.top/", bio:`Shengqiong Wu (she/her) is a research fellow at Oxford University, having previously received a Ph.D. degree at the National University of Singapore, under the supervision of Prof. Tat-Seng Chua. Her research interests include multimodal learning and large vision-language foundation models. She has been recognized with several prestigious awards, including the Google Ph.D. Fellowship, Baidu Scholarship, and Bytedance Scholarship. She has published over 10 papers in top-tier conferences, e.g., ICLR, ICML, NeurIPS, and CVPR. She has co-organized multiple workshops and grand challenges, such as ACM MM and WACV.
+
+Email: shengqiong.wu@cs.ox.ac.uk
+`},
+
+      { name:"Wei Dai", affil:"MIT Media Lab", img:"./Wei_Dai.png", homepage:"https://dd.works/", bio:`Wei Dai (he/him) is a Ph.D. student at MIT Media Lab under the supervision of Prof. Paul Liang. His research interests lie in the field of multimodal learning, particularly multimodal LLMs, and their applications to healthcare. Before joining MIT, he was a master's student at Stanford University, supervised by Prof. Li Fei-Fei and Prof. Ehsan Adeli. His work has been published at top conferences, including NeurIPS, ICML, and MICCAI. His research is supported by NSF Graduate Research Fellowships (GRFP) and ORCD Seed Fund.
+
+Email: dvdai@mit.edu
+`},
+
+      { name:"Han Lin", affil:"UNC Chapel Hill", img:"./Han_Lin.png", homepage:"https://hl-hanlin.github.io/", bio:`Han Lin (he/him) is a third-year Ph.D. student at the University of North Carolina at Chapel Hill, supervised by Prof. Mohit Bansal. His research interests include image and video generation, multimodal learning, and LLMs. Before joining UNC, he was a master's student at Columbia University, supervised by Prof. Shih-Fu Chang, Prof.  Matei Ciocarlie, and Prof. Shuran Song. He has over 13 papers in top-tier conferences such as ICLR, ICML, NeurIPS, CVPR, and COLM.
+
+Email: hanlincs@cs.unc.edu
+`},
+
+      { name:"Yichen Li", affil:"MIT", img:"./Yichen.jpeg", homepage:"https://people.csail.mit.edu/yichenl/", bio:`Yichen Li (he/him) is a Ph.D. student at MIT, working with Prof. Antonio Torralba. Her research interests lie in the field of multimodal learning and foundational learning paradigms agnostic to data modalities. She received the Robert Shillman Graduate Fellowship and has published works at top-tier conferences, including CVPR, ICCV, ICLR, ICML, and ECCV. She also served as a core organizer for multiple workshops at ECCV and RSS.
+`},
+
+      { name:"Chenyu Monica Wang", affil:"MIT", img:"./Chenyu.jpeg", homepage:"https://chenyuwang-monica.github.io/", bio:`Chenyu (Monica) Wang (she/her) is a Ph.D. student at MIT, advised by Prof. Tommi Jaakkola. Her research interests lie broadly in deep generative models, reinforcement learning, multi-modal learning, and AI for science. During her PhD, she was a research intern at Meta FAIR and Genentech. Her research is supported by The Citadel GQS PhD Fellowship. She has published work at top-tier conferences, including NeurIPS and ICLR.
+`},
+
+      { name:"Sharut Gupta", affil:"MIT", img:"./Sharut.jpg", homepage:"https://www.mit.edu/~sharut/", bio:`Sharut Gupta (she/her) is a Ph.D. student at MIT, working with Prof. Phillip Isola and Prof. Stefanie Jegelka. Prior to her PhD, she received her Bachelor’s and Master’s (Dual) degrees from the Indian Institute of Technology Delhi (IIT Delhi). Her research interests focus on multi-modal representation learning, robustness, and out-of-distribution generalization. Sharut is a recipient of the MIT Presidential Fellowship and the MathWorks Engineering Fellowship, and has published work at top-tier conferences, including NeurIPS, ICLR, and ICML.
+
+Email: sharut@mit.edu
+`},
+
+      { name:"Roman Bachmann", affil:"EPFL", img:"./Roman.jpg", homepage:"https://roman-bachmann.github.io/", bio:`Roman Bachmann (he/him) is a Ph.D. student at EPFL, advised by Prof. Amir Zamir. Starting in early 2026, he will join Apple as a research scientist. His research focus is on developing scalable objectives for training any-to-any models across a large and diverse set of modalities, as well as training flexible tokenizers for generative modeling. He has published works at top-tier conferences, including CVPR, ICCV, ECCV, NeurIPS, ICML, and SIGGRAPH.
+
+Email: roman.bachmann@epfl.ch
+`},
+
+      { name:"Elisa Ricci", affil:"University of Trento", img:"./Elisa.png", homepage:"https://eliricci.eu/", bio:`Elisa Ricci (she/her) is a Professor at the University of Trento. She is also the Coordinator of the Doctoral Program in Information Engineering and Computer Science at Trento, a member of ELLIS, and an IAPR Fellow. Her research spans the intersection of computer vision, deep learning, and robotics perception, with an emphasis on domain adaptation, continual learning, and self-supervised learning from visual and multimodal data.
+`},
+
+      { name:"Hao Fei", affil:"National University of Singapore", img:"./feihao.jpg", homepage:"https://haofei.vip/", bio:`Hao Fei (he/him) is a senior research fellow at National University of Singapore.
+`},
+    ];
+
+    const CONTRIBUTORS = [
+      { name:"Shiqi Dai (Web Design)", affil:"Gunn High School", img:"./shichi.jpg", homepage:"https://cvpr-2026-workshop-jpxj74c2g-shiqis-projects-6be7ecea.vercel.app/", bio:`Shiqi Dai (she/her) is a high school student at Gunn High School under the supervision of Prof. Paul Liang. Her research interests lie in the field of multimodal learning, particularly multimodal LLMs, and their applications to healthcare. 
+
+Email: sd53709@pausd.us
+`},
+    ];
+
+    const SPEAKERS = [
+      { name:"Paul Liang", affil:"MIT", img:"./Paul_Liang.jpeg", homepage:"https://www.mit.edu/~ppliang/", bio:`Paul Pu Liang is an Assistant Professor at the MIT Media Lab and MIT EECS, and leads the Multisensory Intelligence research group, where he investigates how machines can learn from and reason across diverse sensory modalities to engage with the real world. He received his PhD in Machine Learning from Carnegie Mellon University. His research focuses on multimodal representation learning, modality transformation via unified architectures, and interactive systems that bridge human and machine experience. He is dedicated to mentoring the next generation of researchers and promoting broader participation in AI.`},
+
+      { name:"Manling Li", affil:"Northwestern University", img:"./Manling.jpeg", homepage:"https://limanling.github.io/", bio:`Manling Li is an Assistant Professor of Computer Science at Northwestern University, where she leads the Machine Learning and Language (MLL) Lab. Her research explores how machines can reason, plan, and act across modalities—bridging language, vision, audio, robotics, and embodied interaction—to build trustworthy, compositional, and long-horizon intelligent systems. She holds a PhD from the University of Illinois Urbana-Champaign and was a post-doctoral researcher at Stanford University. Prof. Manling has received many awards, including the MIT Technology Review 35 Under 35, Microsoft Research PhD Fellowship, and the ACL 2024 Outstanding Paper Award.`},
+
+      { name:"Mohit Bansal", affil:"University of North Carolina, Chapel Hill", img:"./Mohit.png", homepage:"https://www.cs.unc.edu/~mbansal/", bio:`Mohit Bansal is the John R. & Louise S. Parker Distinguished Professor and the Director of the MURGe-Lab (UNC-NLP Group) in the Computer Science department at UNC Chapel Hill. His research expertise is in natural language processing and multimodal machine learning, with a particular focus on multimodal generative models, grounded and embodied semantics, and interpretable, efficient, and generalizable deep learning. He is an AAAI Fellow and recipient of the Presidential Early Career Award for Scientists and Engineers (PECASE), IIT Kanpur Young Alumnus Award, and outstanding paper awards at ACL, CVPR, and TMLR. His service includes EMNLP and CoNLL Program Co-Chair, ACM Doctoral Dissertation Award Committee, and Associate/Action Editor for TACL, CL, and IEEE/ACM.`},
+
+      { name:"Zhedong Zheng", affil:"University of Macau", img:"./zhedongzheng.webp", homepage:"https://zdzheng.xyz/", bio:`Zhedong Zheng is an Assistant Professor with the University of Macau. He received the Ph.D. degree from the University of Technology Sydney in 2021 and the B.S. degree from Fudan University in 2016. He was a postdoctoral research fellow at the School of Computing, National University of Singapore. He received the IEEE Circuits and Systems Society Outstanding Young Author Award of 2021. His research interests include AIGC, Data-centric AI, and Spatial Intelligence. He actively serves the academic community, acting as a Senior PC for IJCAI and AAAI, an Area Chair for ACM MM’24, ACM MM’25 and ICASSP’25, and the Publication Chair for ACM MM’25 and AVSS’25.`},
+
+      { name:"Yossi Gandelsman", affil:"Reqe", img:"./Yossi.png", homepage:"https://yossigandelsman.github.io/", bio:`Yossi Gandelsman is a research scientist at Reve. Starting Fall 2026, he will join the Toyota Technological Institute at Chicago (TTIC) as an assistant professor. His research interests focus on interpretability and model mechanisms across computer vision and language. He received his PhD from the University of California, Berkeley, worked on the Perception Team at Google DeepMind, and holds an M.Sc. from the Weizmann Institute of Science.`},
+
+      { name:"Georgia Gkioxari", affil:"Caltech", img:"./Georgia.jpeg", homepage:"https://gkioxari.github.io/", bio:`Georgia Gkioxari is an Assistant Professor in the Computing & Mathematical Sciences department at Caltech. Previously, she worked as a research scientist at Meta FAIR. She obtained her PhD under Jitendra Malik at UC Berkeley, and completed her undergraduate studies in Greece at the National Technical University of Athens. Her research focuses on advanced visual perception, including 2D & 3D spatial representation and reasoning, transforming images into structured multi-modal outputs. She has received numerous honors, including the PAMI Young Researcher Award, Google Faculty Award, and Okawa Research Award.`},
+
+      { name:"Saining Xie", affil:"NYU", img:"./Saining.png", homepage:"https://sainingxie.com/", bio:`Saining Xie is an Assistant Professor of Computer Science at NYU’s Courant Institute and a member of the NYU Center for Data Science. He earned his Ph.D. in Computer Science & Engineering from UC San Diego and previously worked as a research scientist at Facebook AI Research. His research develops robust, scalable visual-intelligence systems which bridge visual perception, representation learning, and commonsense reasoning.`}
+    ];
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function cardHTML(p){
+      return `
+        <div class="card" role="button" tabindex="0" data-name="${escapeHtml(p.name)}">
+          <div class="img">
+            <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" />
+            <div class="chev" aria-hidden="true"><span>→</span></div>
+          </div>
+          <div class="meta">
+            <p class="name">${escapeHtml(p.name)}</p>
+            <p class="affil">${escapeHtml(p.affil || "")}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGrid(elId, arr, roleLabel){
+      const el = document.getElementById(elId);
+      el.innerHTML = arr.map(cardHTML).join("");
+      el.querySelectorAll(".card").forEach(card=>{
+        const name = card.getAttribute("data-name");
+        const p = arr.find(x=>x.name===name);
+        const open = ()=>openModal(p, roleLabel);
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", e=>{
+          if(e.key==="Enter" || e.key===" "){ e.preventDefault(); open(); }
+        });
+      });
+    }
+
+    const modal = document.getElementById("modal");
+    const modalClose = document.getElementById("modalClose");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSub = document.getElementById("modalSub");
+    const modalImg = document.getElementById("modalImg");
+    const modalBio = document.getElementById("modalBio");
+    const modalHome = document.getElementById("modalHome");
+
+    function openModal(p, roleLabel){
+      modalTitle.textContent = p.name || "";
+      modalSub.textContent = p.affil || "";
+      modalImg.src = p.img || "";
+      modalImg.alt = p.name || "";
+
+      const bioText = (p.bio || "").trim();
+      modalBio.innerHTML = bioText
+        ? bioText
+            .split(/\n\s*\n/g)
+            .map(par => `<p>${escapeHtml(par).replace(/\n/g, "<br>")}</p>`)
+            .join("")
+        : "";
+
+      if(p.homepage){
+        modalHome.href = p.homepage;
+        modalHome.textContent = `The ${roleLabel}'s Homepage`;
+        modalHome.style.display = "inline-flex";
+      }else{
+        modalHome.href = "#";
+        modalHome.textContent = `The ${roleLabel}'s Homepage`;
+        modalHome.style.display = "none";
+      }
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      modalClose.focus();
+    }
+
+    function closeModal(){
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    modal.addEventListener("click", e=>{ if(e.target === modal) closeModal(); });
+    document.addEventListener("keydown", e=>{ if(e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+
+    renderGrid("speakersGrid", SPEAKERS, "Speaker");
+    renderGrid("organizersGrid", ORGANIZERS, "Organizer");
+    renderGrid("contributorsGrid", CONTRIBUTORS, "Contributor");
+
+    /* ===== Mobile menu JS ===== */
+    const navToggle = document.getElementById("navToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    function openMobileMenu(){
+      mobileMenu.classList.add("open");
+      mobileMenu.setAttribute("aria-hidden", "false");
+      navToggle.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileMenu(){
+      mobileMenu.classList.remove("open");
+      mobileMenu.setAttribute("aria-hidden", "true");
+      navToggle.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      navToggle.focus();
+    }
+
+    navToggle.addEventListener("click", ()=>{
+      const isOpen = mobileMenu.classList.contains("open");
+      if(isOpen) closeMobileMenu();
+      else openMobileMenu();
+    });
+
+    mobileMenu.addEventListener("click", (e)=>{
+      const t = e.target;
+      if(t && t.getAttribute && t.getAttribute("data-close")==="1") closeMobileMenu();
+      if(t && t.classList && (t.classList.contains("mm-link") || t.classList.contains("mm-submit"))){
+        closeMobileMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape" && mobileMenu.classList.contains("open")) closeMobileMenu();
+    });
+
+    window.addEventListener("resize", ()=>{
+      if(window.matchMedia("(min-width: 861px)").matches && mobileMenu.classList.contains("open")){
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
+</html>
